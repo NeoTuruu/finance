@@ -23,18 +23,21 @@ var uiController = (function () {
 
 // Sanhuutei ajillah controller
 var financeController = (function () {
+  // private baiguulagch function
   var Income = function (id, description, value) {
     this.id = id;
     this.description = description;
     this.value = value;
   };
+  // private baiguulagch function
   var Expense = function (id, description, value) {
     this.id = id;
     this.description = description;
     this.value = value;
   };
+  // private data
   var data = {
-    allItems: {
+    items: {
       inc: [],
       exp: [],
     },
@@ -43,14 +46,35 @@ var financeController = (function () {
       exp: 0,
     },
   };
+  return {
+    addItem: function (type, desc, val) {
+      var item, id;
+      if (data.items[type].length === 0) id = 1;
+      else {
+        id = data.items[type][data.items[type].length - 1].id + 1;
+      }
+      if (type === "inc") {
+        item = new Income(id, desc, val);
+      } else {
+        //type===exp
+        item = new Expense(id, desc, val);
+      }
+      data.items[type].push();
+    },
+    seeData: function () {
+      return data;
+    },
+  };
 })();
 
 // Programiin holbogch controller
 var appController = (function (uiController, financeController) {
   var ctrlAddItem = function () {
     // 1. Oruulah ugugdliig delgetsees orlj avna
-    console.log(uiController.getInput());
+    var input = uiController.getInput();
+
     // 2. Olj avsan ugugdluudee sanhuugiin controllerluu damjuulj tendee hadgalna
+    financeController.addItem(input.type, input.description, input.value);
     // 3. Olj avsan ugugdluudee web deeree tohiroh hesegt ni gargana.
     // 4. Tusviig tootsoolno
     // 5. Etsiin uldegdel tootsoog delgetsen gargana
